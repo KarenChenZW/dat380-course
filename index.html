@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAT 380 · Business Analytics &amp; Data Visualization</title>
+<style>
+  :root{--ink:#1F3864;--ink2:#2E5496;--teal:#0E9594;--amber:#F4A81D;--bg:#F5F8FC;--card:#fff;--line:#e3e9f2;
+    --shadow:0 6px 22px rgba(31,56,100,.10)}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.55}
+  .hero{background:radial-gradient(1200px 400px at 80% -10%, rgba(14,149,148,.25), transparent),
+    linear-gradient(135deg,#1F3864,#2E5496);color:#fff;text-align:center;padding:66px 22px 56px}
+  .kicker{text-transform:uppercase;letter-spacing:2px;font-size:13px;font-weight:800;color:var(--amber);margin-bottom:8px}
+  .hero h1{font-size:clamp(28px,5vw,48px);margin:0 0 .2em}
+  .hero p{color:#dce6f6;font-size:clamp(15px,2.2vw,20px);margin:0}
+  .meta{margin-top:20px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+  .pill{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);color:#fff;
+    padding:6px 14px;border-radius:999px;font-size:14px;font-weight:600}
+  main{max-width:960px;margin:0 auto;padding:44px 22px 70px}
+  h2{font-size:22px;margin:34px 0 14px;color:var(--ink)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow);
+    display:flex;flex-direction:column;transition:.15s}
+  .card.live:hover{transform:translateY(-3px);border-color:var(--teal)}
+  .ic{font-size:34px;margin-bottom:6px}
+  .card h3{margin:0 0 6px;font-size:19px}
+  .card p{margin:0 0 16px;color:#5a6a82;font-size:15px;flex:1}
+  .btn{display:inline-block;text-align:center;text-decoration:none;background:var(--teal);color:#fff;
+    padding:11px 16px;border-radius:10px;font-weight:700;font-size:15px;box-shadow:0 4px 12px rgba(14,149,148,.3)}
+  .btn:hover{filter:brightness(1.07)}
+  .soon{display:inline-block;text-align:center;background:#eef2f8;color:#8090a8;padding:11px 16px;border-radius:10px;
+    font-weight:700;font-size:15px;cursor:default}
+  .badge{align-self:flex-start;font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+    padding:3px 8px;border-radius:6px;margin-bottom:10px}
+  .badge.on{background:#e7f7f4;color:#0E7d7c}
+  .badge.off{background:#f3f0e6;color:#a07d1e}
+  footer{max-width:960px;margin:0 auto;padding:24px 22px 60px;color:#6a7890;font-size:13px;text-align:center;
+    border-top:1px solid var(--line)}
+  code{background:#eef2f8;padding:1px 6px;border-radius:5px;font-size:.92em}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="kicker">Berry College · Fall 2026 · Writing Intensive</div>
+  <h1>DAT 380 · Business Analytics &amp; Data Visualization</h1>
+  <p>Interactive tools, games, and simulations for the course.</p>
+  <div class="meta">
+    <span class="pill">Dr. Zhuowen (Karen) Chen</span>
+    <span class="pill">Tue &amp; Thu · 9:30–10:45</span>
+    <span class="pill">Green 109</span>
+  </div>
+</header>
+
+<main>
+  <h2>Course tools</h2>
+  <div class="grid">
+
+    <div class="card live">
+      <span class="badge on">Live</span>
+      <div class="ic">📘</div>
+      <h3>Interactive Syllabus</h3>
+      <p>Explore the course, grading, policies, and a live grade calculator — the version we walk through on day one.</p>
+      <a class="btn" href="syllabus/">Open syllabus →</a>
+    </div>
+
+    <div class="card">
+      <span class="badge off">Coming soon</span>
+      <div class="ic">🎯</div>
+      <h3>Games</h3>
+      <p>Quick, playable concept-checks — method matching, data detective, and more.</p>
+      <span class="soon">Coming soon</span>
+    </div>
+
+    <div class="card">
+      <span class="badge off">Coming soon</span>
+      <div class="ic">🔬</div>
+      <h3>Simulations</h3>
+      <p>Interactive demos of core ideas — sampling, overfitting, clustering, and beyond.</p>
+      <span class="soon">Coming soon</span>
+    </div>
+
+  </div>
+
+  <!--
+    ============================================================
+    HOW TO ADD A NEW TOOL (see README.md for full details)
+    1. Put the tool in its own folder with an index.html, e.g.
+         games/method-match/index.html
+    2. Copy a card block above, change the icon/title/text, and
+       point the link at the folder:
+         <a class="btn" href="games/method-match/">Play →</a>
+       (change the badge from "off / Coming soon" to "on / Live")
+    3. Commit. It goes live at yoursite/.../games/method-match/
+    Use RELATIVE links (href="games/x/"), never absolute (href="/games/x/").
+    ============================================================
+  -->
+</main>
+
+<footer>
+  DAT 380 I A · Business Analytics &amp; Data Visualization · Fall 2026 · Dr. Zhuowen (Karen) Chen<br>
+  Course tools hub. The official syllabus on Canvas governs.
+</footer>
+</body>
+</html>

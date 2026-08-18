@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAT 380 · Interactive Syllabus</title>
+<style>
+  :root{
+    --ink:#1F3864; --ink2:#2E5496; --teal:#0E9594; --amber:#F4A81D;
+    --bg:#F5F8FC; --card:#ffffff; --line:#e3e9f2; --good:#1B998B; --bad:#E4572E;
+    --shadow:0 6px 22px rgba(31,56,100,.10);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.55;font-size:17px}
+  h1,h2,h3{line-height:1.15;margin:0 0 .3em}
+  a{color:var(--teal)}
+  nav{position:sticky;top:0;z-index:50;background:rgba(31,56,100,.97);backdrop-filter:blur(6px);
+    display:flex;flex-wrap:wrap;gap:4px;padding:10px 14px;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+  nav button{background:transparent;color:#cdd8ec;border:0;padding:8px 12px;border-radius:8px;
+    font-size:14px;font-weight:600;cursor:pointer;transition:.15s}
+  nav button:hover{background:rgba(255,255,255,.12);color:#fff}
+  nav .brand{color:#fff;font-weight:800;padding:8px 12px;margin-right:auto;font-size:15px;letter-spacing:.3px}
+  section{max-width:960px;margin:0 auto;padding:54px 22px;border-bottom:1px solid var(--line)}
+  .hero{max-width:none;background:
+    radial-gradient(1200px 400px at 80% -10%, rgba(14,149,148,.25), transparent),
+    linear-gradient(135deg,#1F3864,#2E5496);color:#fff;text-align:center;padding:70px 22px 60px}
+  .hero h1{font-size:clamp(30px,5vw,52px);margin-bottom:.15em}
+  .hero .sub{font-size:clamp(16px,2.4vw,22px);color:#dce6f6;font-weight:500}
+  .hero .meta{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+  .pill{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);color:#fff;
+    padding:7px 14px;border-radius:999px;font-size:14px;font-weight:600}
+  .kicker{text-transform:uppercase;letter-spacing:2px;font-size:13px;font-weight:800;color:var(--teal);margin-bottom:6px}
+  .lead{font-size:19px;color:#3a4a63}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:760px){.g2,.g3{grid-template-columns:1fr}}
+  .btn{background:var(--teal);color:#fff;border:0;padding:12px 20px;border-radius:10px;font-weight:700;
+    font-size:16px;cursor:pointer;transition:.15s;box-shadow:0 4px 12px rgba(14,149,148,.3)}
+  .btn:hover{filter:brightness(1.07);transform:translateY(-1px)}
+  .btn.amber{background:var(--amber);box-shadow:0 4px 12px rgba(244,168,29,.3);color:#3a2c00}
+  .muted{color:#6a7890;font-size:15px}
+  .big{font-size:clamp(34px,6vw,60px);font-weight:800;line-height:1}
+  .flip{cursor:pointer;user-select:none;min-height:120px;display:flex;align-items:center;justify-content:center;
+    text-align:center;padding:18px;font-weight:700;transition:.2s;position:relative}
+  .flip:hover{transform:translateY(-3px)}
+  .flip .front{font-size:18px}
+  .flip .back{display:none;font-size:14px;font-weight:500;color:#3a4a63}
+  .flip.open{background:linear-gradient(135deg,#eafaf9,#fff);border-color:var(--teal)}
+  .flip.open .front{color:var(--teal);font-size:15px;margin-bottom:6px}
+  .flip.open .back{display:block}
+  .q{margin-bottom:14px}
+  .q .opts{display:grid;gap:8px;margin-top:8px}
+  .opt{text-align:left;background:#fff;border:2px solid var(--line);padding:12px 14px;border-radius:10px;
+    cursor:pointer;font-size:15px;font-weight:600;color:var(--ink);transition:.12s}
+  .opt:hover{border-color:var(--ink2)}
+  .opt.correct{border-color:var(--good);background:#eafaf6}
+  .opt.wrong{border-color:var(--bad);background:#fdece6}
+  .opt:disabled{cursor:default}
+  .fb{margin-top:8px;font-size:14px;font-weight:600;display:none}
+  .fb.show{display:block}
+  .scorebar{position:sticky;bottom:0;background:var(--ink);color:#fff;border-radius:12px;padding:10px 16px;
+    font-weight:700;text-align:center;margin-top:10px}
+  .row{display:flex;align-items:center;gap:12px;margin:10px 0}
+  .row label{flex:1;font-weight:600}
+  .row input[type=range]{flex:2;accent-color:var(--teal)}
+  .row .val{width:88px;text-align:right;font-weight:700;color:var(--ink2)}
+  .result{text-align:center;padding:18px;border-radius:14px;background:linear-gradient(135deg,#1F3864,#2E5496);color:#fff}
+  .grade{display:inline-block;min-width:96px;padding:6px 14px;border-radius:12px;background:#fff;color:var(--ink);font-weight:800;font-size:34px}
+  .chk{display:flex;align-items:center;gap:10px;margin-top:6px;font-weight:600}
+  .chk input{width:20px;height:20px;accent-color:var(--amber)}
+  .note{background:#f0f5fb;border-left:4px solid var(--teal);padding:10px 14px;border-radius:8px;font-size:14px;color:#3a4a63;margin-top:10px}
+  .center{text-align:center}
+  ul.clean{margin:.4em 0 0;padding-left:20px}
+  ul.clean li{margin:.35em 0}
+  .foot{max-width:960px;margin:0 auto;padding:30px 22px 60px;color:#6a7890;font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="brand">DAT 380 · Business Analytics</span>
+  <button onclick="go('welcome')">Welcome</button>
+  <button onclick="go('spot')">Spot the Data</button>
+  <button onclick="go('what')">What We Do</button>
+  <button onclick="go('materials')">Materials</button>
+  <button onclick="go('hours')">Student Hours</button>
+  <button onclick="go('calc')">Grades</button>
+  <button onclick="go('attend')">Attendance</button>
+  <button onclick="go('late')">Late Policy</button>
+  <button onclick="go('quiz')">Quiz</button>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="welcome">
+  <div class="kicker" style="color:var(--amber)">Fall 2026 · Writing Intensive</div>
+  <h1>Business Analytics &amp; Data Visualization</h1>
+  <div class="sub">Turning data into decisions — in R, and in plain English.</div>
+  <div class="meta">
+    <span class="pill">Dr. Zhuowen (Karen) Chen</span>
+    <span class="pill">Tue &amp; Thu · 9:30–10:45</span>
+    <span class="pill">Green 109 (Computer Lab)</span>
+    <span class="pill">kchen@berry.edu</span>
+  </div>
+  <p style="margin-top:26px"><button class="btn amber" onclick="go('spot')">Let's begin →</button></p>
+</header>
+
+<!-- ICEBREAKER (Course Description / Purpose) -->
+<section id="spot">
+  <div class="kicker">Course Description</div>
+  <h2>Spot the analytics in your everyday life</h2>
+  <p class="lead">Tap each card. Every one of these is a data-driven decision someone made about <em>you</em> — which is exactly what this course is about.</p>
+  <div class="grid g3" style="margin-top:18px">
+    <div class="card flip" onclick="this.classList.toggle('open')">
+      <div><div class="front">🎬 Netflix picks your next show</div><div class="back">A recommender model predicts what you'll watch from millions of viewing patterns. (We cover this: Association Rules &amp; Collaborative Filtering.)</div></div>
+    </div>
+    <div class="card flip" onclick="this.classList.toggle('open')">
+      <div><div class="front">🗺️ Maps knows your ETA</div><div class="back">Live data + prediction models estimate arrival time and re-route you in real time.</div></div>
+    </div>
+    <div class="card flip" onclick="this.classList.toggle('open')">
+      <div><div class="front">💳 A fraud alert pings your phone</div><div class="back">A classifier flags a transaction as "likely fraud" — someone tuned the cost of a false alarm vs. a missed fraud. (We cover this: Evaluating Performance.)</div></div>
+    </div>
+    <div class="card flip" onclick="this.classList.toggle('open')">
+      <div><div class="front">🎧 Spotify Wrapped</div><div class="back">Clustering + summary analytics turn a year of listening into a shareable story. (We cover this: Cluster Analysis + Visualization.)</div></div>
+    </div>
+    <div class="card flip" onclick="this.classList.toggle('open')">
+      <div><div class="front">🛒 "Customers also bought…"</div><div class="back">Market-basket analysis finds items that sell together and nudges the next purchase.</div></div>
+    </div>
+    <div class="card flip" onclick="this.classList.toggle('open')">
+      <div><div class="front">🏠 A home's "estimated value"</div><div class="back">A regression model predicts price from features like size, location, and rooms. (This is literally one of our homework datasets!)</div></div>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:16px">💬 <strong>Turn &amp; talk:</strong> which one surprised you? Where else have you been on the receiving end of an analytics decision?</p>
+</section>
+
+<!-- WHAT WE DO (Purpose / SLOs) -->
+<section id="what">
+  <div class="kicker">Purpose &amp; Learning Outcomes</div>
+  <h2>What this class is really about</h2>
+  <p class="lead">By the end of the semester, you'll look at any business problem and answer three questions:</p>
+  <div class="grid g3" style="margin-top:18px">
+    <div class="card"><div class="big" style="color:var(--teal)">1</div><h3>What decision am I informing?</h3><p class="muted">Start with the choice a manager has to make — not the data.</p></div>
+    <div class="card"><div class="big" style="color:var(--teal)">2</div><h3>Which method fits?</h3><p class="muted">Regression? Classification? Clustering? Pick the right tool for the question.</p></div>
+    <div class="card"><div class="big" style="color:var(--teal)">3</div><h3>What should we do about the result?</h3><p class="muted">Turn the output into a recommendation someone can act on.</p></div>
+  </div>
+  <div class="card" style="margin-top:18px;background:linear-gradient(135deg,#eafaf9,#fff)">
+    <strong>The rhythm of the course:</strong> you'll <em>run the analysis in R</em> (homework), then <em>write it up for a decision-maker</em> (case analysis). Run the model first — then tell the decision-maker what to do about it.
+  </div>
+</section>
+
+<!-- COURSE MATERIALS -->
+<section id="materials">
+  <div class="kicker">Course Materials</div>
+  <h2>What you'll need</h2>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card">
+      <h3>📕 Required textbook</h3>
+      <p><strong>Shmueli, Bruce, Gedeck, Yahav &amp; Patel (2023).</strong> <em>Machine Learning for Business Analytics: Concepts, Techniques, and Applications in R.</em> Wiley. <span class="muted">ISBN 978-1-119-83519-6</span></p>
+      <p class="muted">We use this all semester — the chapter for each class is listed in the schedule.</p>
+    </div>
+    <div class="card">
+      <h3>💻 Software (all free)</h3>
+      <ul class="clean">
+        <li><strong>R + RStudio</strong> — our main analysis tool. <em>No prior coding required</em> — we build it up together, with templates.</li>
+        <li><strong>Canvas</strong> — materials, announcements, and submissions.</li>
+        <li>Excel/Google Sheets, Word/Docs, PowerPoint/Slides.</li>
+      </ul>
+      <div class="note">Green 109 is a computer lab — a machine is ready for you every class, with everything installed.</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3>🗂️ Instructor materials</h3>
+    <p class="muted" style="margin:0">Lecture notes, slides, cases, and data files are posted on Canvas. These are required course materials — not optional extras.</p>
+  </div>
+</section>
+
+<!-- STUDENT HOURS / RESPONSE TIMES -->
+<section id="hours">
+  <div class="kicker">Student Hours &amp; Getting Help</div>
+  <h2>How to reach me</h2>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card">
+      <h3>🚪 Student hours</h3>
+      <p><strong>Mondays &amp; Wednesdays, 9:00 a.m.–12:00 p.m.</strong><br>Green 412 — drop in anytime the door is open, or email me for an appointment (in person or online).</p>
+      <p class="muted" style="margin:0">Come to talk about the course, your work, your plans — or just to check in. Strong students use office hours <em>early</em>, not just when stuck.</p>
+    </div>
+    <div class="card">
+      <h3>✉️ Email &amp; response times</h3>
+      <ul class="clean">
+        <li>Put your <strong>name + course</strong> in the message.</li>
+        <li>I reply within <strong>24–48 hours</strong> on weekdays; weekend messages get a reply the next business day.</li>
+        <li>Check the syllabus/Canvas first — the answer is often there.</li>
+        <li>Grade questions are discussed <strong>in person</strong>, not by email.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- GRADE CALCULATOR (Assessment + Grading Scale) -->
+<section id="calc">
+  <div class="kicker">Assessment &amp; Grading</div>
+  <h2>Live Grade Calculator</h2>
+  <p class="lead">Slide each component to see your total out of <strong>200</strong> and your letter grade update in real time. These are the real weights.</p>
+  <div class="grid g2" style="margin-top:16px;align-items:start">
+    <div class="card">
+      <div class="row"><label>Reflection assignments <span class="muted">(15%)</span></label><input type="range" id="r_ref" min="0" max="30" value="27" oninput="calc()"><span class="val" id="v_ref"></span></div>
+      <div class="row"><label>Homework ×3 <span class="muted">(15%)</span></label><input type="range" id="r_hw" min="0" max="30" value="27" oninput="calc()"><span class="val" id="v_hw"></span></div>
+      <div class="row"><label>Case analyses ×3 <span class="muted">(30%)</span></label><input type="range" id="r_case" min="0" max="60" value="52" oninput="calc()"><span class="val" id="v_case"></span></div>
+      <div class="row"><label>Group project — <em>team score</em> <span class="muted">(30%)</span></label><input type="range" id="r_proj" min="0" max="60" value="54" oninput="calc()"><span class="val" id="v_proj"></span></div>
+      <div class="row"><label>↳ Your peer-evaluation rating</label><input type="range" id="r_peer" min="0" max="100" value="100" oninput="calc()"><span class="val" id="v_peer"></span></div>
+      <div class="row"><label>Attendance &amp; participation <span class="muted">(10%)</span></label><input type="range" id="r_att" min="0" max="20" value="20" oninput="calc()"><span class="val" id="v_att"></span></div>
+      <label class="chk"><input type="checkbox" id="r_ec" onchange="calc()"> Completed the course evaluation <span class="muted">(+5 extra credit)</span></label>
+      <div class="note"><strong>Peer evaluation:</strong> half your project points come from the team score; the other half is scaled by your peer rating. Your project points = (½ of team score) + (½ of team score × your peer rating). A rating can't push you above what your team earned.</div>
+    </div>
+    <div class="result">
+      <div class="muted" style="color:#cdd8ec">Your project points (after peer eval)</div>
+      <div style="font-size:24px;font-weight:800;margin:2px 0 12px" id="c_proj">54.0 / 60</div>
+      <div class="muted" style="color:#cdd8ec">Your total</div>
+      <div class="big" id="c_total">180 / 200</div>
+      <div style="margin:6px 0 14px;font-size:20px" id="c_pct">90%</div>
+      <div class="grade" id="c_grade">A–</div>
+      <div class="muted" id="c_note" style="color:#cdd8ec;margin-top:10px">No final exam — cases + project are 60% of your grade.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ATTENDANCE -->
+<section id="attend">
+  <div class="kicker">Attendance &amp; Participation</div>
+  <h2>Attendance Simulator</h2>
+  <p class="lead">You start at the full <strong>20 points</strong>. Two absences are free. After that, each absence costs 5 points. (Arriving 10+ minutes late = an absence.)</p>
+  <div class="card" style="margin-top:16px">
+    <div class="row"><label style="flex:2">How many classes will you miss this semester?</label>
+      <input type="range" id="abs" min="0" max="8" value="0" oninput="att()"><span class="val" id="abs_v">0</span></div>
+    <div class="result" style="margin-top:10px">
+      <div class="muted" style="color:#cdd8ec">Attendance points</div>
+      <div class="big" id="att_pts">20 / 20</div>
+      <div id="att_msg" style="margin-top:8px;font-size:16px">Perfect — full credit. 🎉</div>
+    </div>
+    <div class="note">Life happens — if you'll miss more than two, email me <em>early</em> and we'll figure it out together.</div>
+  </div>
+</section>
+
+<!-- LATE POLICY -->
+<section id="late">
+  <div class="kicker">Late Policy &amp; Submission</div>
+  <h2>What happens if something's late</h2>
+  <div class="grid g2" style="margin-top:16px;align-items:start">
+    <div class="card">
+      <h3>The rules</h3>
+      <ul class="clean">
+        <li>Late <strong>individual</strong> work (reflections, homework, case analyses) loses <strong>10% per day, up to 3 days</strong>; after that it isn't accepted.</li>
+        <li><strong>Homework</strong> can be resubmitted any time before its deadline — the latest version is graded.</li>
+        <li><strong>Group-project</strong> deadlines don't move for one member's conflict — the team plans ahead.</li>
+        <li>See a conflict coming (travel, interview, observance)? Tell me <strong>at least a week ahead</strong> and we'll arrange it.</li>
+        <li>Submit via Canvas; the timestamp governs. A file that won't open counts as not submitted — so submit early.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Try it: a late case analysis</h3>
+      <p class="muted" style="margin-top:0">A case analysis is worth 20 points. Drag to see what lateness costs.</p>
+      <div class="row"><label style="flex:2">Days late</label>
+        <input type="range" id="late_d" min="0" max="4" value="0" oninput="lateCalc()"><span class="val" id="late_dv">0</span></div>
+      <div class="result">
+        <div class="muted" style="color:#cdd8ec">Best possible score</div>
+        <div class="big" id="late_pts">20 / 20</div>
+        <div id="late_msg" style="margin-top:8px;font-size:16px">On time — full marks available. ✅</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ (recap) -->
+<section id="quiz">
+  <div class="kicker">Check yourself</div>
+  <h2>The 60-Second Syllabus Quiz</h2>
+  <p class="lead">Tap an answer — you'll see instantly if it's right. No grade, just bragging rights.</p>
+  <div id="quizbox" style="margin-top:16px"></div>
+  <div class="scorebar" id="scorebar">Score: 0 / 0 — let's go!</div>
+  <div class="card center" style="margin-top:20px;background:linear-gradient(135deg,#1F3864,#2E5496);color:#fff">
+    <h3 style="color:#fff">Before Thursday</h3>
+    <p style="color:#dce6f6;margin:.3em 0 0">✅ Log into Canvas &nbsp; ✅ Check your Berry email works &nbsp; ✅ Skim the full syllabus &nbsp; ✅ Bring your questions</p>
+  </div>
+</section>
+
+<div class="foot">
+  DAT 380 I A · Business Analytics &amp; Data Visualization · Fall 2026 · Dr. Zhuowen (Karen) Chen<br>
+  This interactive page summarizes the syllabus for class. The official syllabus on Canvas governs. Syllabus subject to change.
+</div>
+
+<script>
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});}
+
+/* ---------- SYLLABUS QUIZ ---------- */
+const QUIZ=[
+  {q:"What is the whole course graded out of?",
+   opts:["100 points","200 points","1000 points"],a:1,
+   fb:"200 points total — reflections 30, homework 30, cases 60, project 60, attendance 20."},
+  {q:"Which is worth the most toward your grade?",
+   opts:["Reflection assignments (15%)","Attendance (10%)","Case analyses (30%)","Homework (15%)"],a:2,
+   fb:"Case analyses are 30% — tied with the group project as the biggest chunk."},
+  {q:"Is there a final exam?",
+   opts:["Yes, during exam week","No — a group presentation on Dec 8 instead"],a:1,
+   fb:"No final exam. Your team presents its project during the Dec 8 exam slot."},
+  {q:"How many absences before you lose attendance points?",
+   opts:["Zero — every absence counts","Two are free; points drop after that","Unlimited if you email me"],a:1,
+   fb:"Two or fewer = full credit. Each absence beyond two costs 5 points. (10+ min late = an absence.)"},
+  {q:"How late can an individual assignment be and still earn some credit?",
+   opts:["Up to 3 days (−10%/day)","One week, no penalty","No late work is ever accepted"],a:0,
+   fb:"10% off per day for up to 3 days; after 3 days it isn't accepted. Tell me early about conflicts."},
+  {q:"Can you use AI to write your case analysis?",
+   opts:["Yes, however you like","Only to proofread your own writing — the ideas & analysis must be yours","No AI at all, ever"],a:1,
+   fb:"Proofreading your own writing is fine (with disclosure). Generating ideas, analysis, or drafts is not."},
+  {q:"What software will you use to run the analysis?",
+   opts:["Python","R (with RStudio)","Only Excel"],a:1,
+   fb:"R + RStudio. No prior coding needed — we build it up from scratch, with templates."},
+  {q:"How do homework and case analysis connect?",
+   opts:["They're totally separate","Each case analysis builds on the homework right before it","The case comes first, then the homework"],a:1,
+   fb:"You run the analysis in the homework, then interpret those same results in the paired case analysis."}
+];
+let qScore=0,qDone=0;
+const qb=document.getElementById('quizbox');
+QUIZ.forEach((item,i)=>{
+  const wrap=document.createElement('div');wrap.className='card q';
+  wrap.innerHTML='<div style="font-weight:700">'+(i+1)+'. '+item.q+'</div><div class="opts" id="opts'+i+'"></div><div class="fb" id="fb'+i+'"></div>';
+  qb.appendChild(wrap);
+  const o=wrap.querySelector('#opts'+i);
+  item.opts.forEach((txt,j)=>{
+    const b=document.createElement('button');b.className='opt';b.textContent=txt;
+    b.onclick=function(){answer(i,j,b);};o.appendChild(b);
+  });
+});
+function answer(i,j,btn){
+  const item=QUIZ[i];const opts=document.getElementById('opts'+i);
+  if(opts.dataset.done)return;opts.dataset.done="1";
+  Array.from(opts.children).forEach(function(b,k){b.disabled=true;if(k===item.a)b.classList.add('correct');});
+  if(j!==item.a)btn.classList.add('wrong');
+  if(j===item.a)qScore++;qDone++;
+  const fb=document.getElementById('fb'+i);fb.textContent=(j===item.a?"✓ ":"✗ ")+item.fb;
+  fb.classList.add('show');fb.style.color=(j===item.a?'var(--good)':'var(--bad)');
+  updateScore();
+}
+function updateScore(){
+  const s=document.getElementById('scorebar');
+  let msg="Score: "+qScore+" / "+qDone;
+  if(qDone===QUIZ.length){
+    if(qScore===QUIZ.length)msg+=" — 🏆 Perfect! You clearly read the syllabus.";
+    else if(qScore>=QUIZ.length-2)msg+=" — 👍 Nicely done!";
+    else msg+=" — 📖 Worth another skim tonight!";
+  }
+  s.textContent=msg;
+}
+
+/* ---------- GRADE CALCULATOR ---------- */
+function letter(p){
+  if(p>=93)return"A"; if(p>=90)return"A–"; if(p>=87)return"B+"; if(p>=83)return"B"; if(p>=80)return"B–";
+  if(p>=77)return"C+"; if(p>=73)return"C"; if(p>=70)return"C–"; if(p>=67)return"D+"; if(p>=60)return"D"; return"F";
+}
+function calc(){
+  const ref=+r_ref.value,hw=+r_hw.value,cs=+r_case.value,team=+r_proj.value,peer=+r_peer.value,at=+r_att.value;
+  const ec=document.getElementById('r_ec').checked?5:0;
+  v_ref.textContent=ref+"/30";v_hw.textContent=hw+"/30";v_case.textContent=cs+"/60";
+  v_proj.textContent=team+"/60";v_peer.textContent=peer+"%";v_att.textContent=at+"/20";
+  const projPts=team*0.5 + team*0.5*(peer/100);
+  document.getElementById('c_proj').textContent=(Math.round(projPts*10)/10)+" / 60";
+  const tot=ref+hw+cs+projPts+at+ec;
+  const totR=Math.round(tot*10)/10;
+  const pct=Math.round(tot/200*1000)/10;
+  c_total.textContent=totR+" / 200";c_pct.textContent=pct+"%";
+  const L=letter(pct);const g=document.getElementById('c_grade');g.textContent=L;
+  g.style.color=(L==="F")?'var(--bad)':(L[0]==="A")?'var(--good)':'var(--ink)';
+  document.getElementById('c_note').textContent = ec? "Includes +5 extra credit for the course evaluation." : "No final exam — cases + project are 60% of your grade.";
+}
+calc();
+
+/* ---------- ATTENDANCE ---------- */
+function att(){
+  const a=+document.getElementById('abs').value;document.getElementById('abs_v').textContent=a;
+  const pts=Math.max(0,20-Math.max(0,a-2)*5);
+  document.getElementById('att_pts').textContent=pts+" / 20";
+  const m=document.getElementById('att_msg');let t;
+  if(a<=2)t="Two absences are free — still full credit. 🎉";
+  else if(pts>0)t="That's "+(a-2)+" absence(s) past the freebies → −"+((a-2)*5)+" points.";
+  else t="Ouch — attendance points wiped out. Let's not get here; talk to me early if life happens.";
+  m.textContent=t;
+}
+att();
+
+/* ---------- LATE CALCULATOR ---------- */
+function lateCalc(){
+  const d=+document.getElementById('late_d').value;document.getElementById('late_dv').textContent=d;
+  const pts = d<=3 ? Math.round(20*(1-0.10*d)*10)/10 : 0;
+  document.getElementById('late_pts').textContent=pts+" / 20";
+  const m=document.getElementById('late_msg');let t;
+  if(d===0)t="On time — full marks available. ✅";
+  else if(d<=3)t=d+" day(s) late → −"+(d*10)+"%. Best possible score is "+pts+".";
+  else t="More than 3 days late — not accepted. Score is 0.";
+  m.textContent=t;
+}
+lateCalc();
+</script>
+</body>
+</html>

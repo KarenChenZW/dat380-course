@@ -3,8 +3,6 @@
 Interactive web tools for DAT 380 (Berry College), hosted free on GitHub Pages.
 The landing page (`index.html`) links to the syllabus and, over time, to games and simulations.
 
-**Live site:** `https://<your-username>.github.io/dat380-course/`
-(Replace `<your-username>` with your GitHub username. The repo name `dat380-course` is the last part of the URL.)
 
 ---
 
